@@ -1,0 +1,658 @@
+---
+title: "Read Med RT"
+format: html
+editor: visual
+---
+
+## Load XML
+
+```{r setup}
+pacman::p_load(xml2, tidyverse, evaluate, collapse, htmltidy)
+
+```
+
+```{r}
+d <- xml2::read_xml("inst/Core_MEDRT_XML/Core_MEDRT_2022.05.02_XML.xml")
+```
+
+```{r}
+xml_find_all(d, "//assntype/name[2]")
+```
+
+```{r}
+xml_find_all(d, "/")
+```
+
+```{r}
+x <- xml_find_all(d, "//assntype/name")
+```
+
+```{r}
+library(tidyr)
+library(dplyr)
+install.packages('repurrrsive')
+library(repurrrsive)
+
+users <- tibble(user = gh_users)
+users 
+
+names(users$user[[1]])
+users %>% unnest_wider(user)
+
+users %>% hoist(user, 
+  followers = "followers", 
+  login = "login", 
+  url = "html_url"
+)
+
+repos <- tibble(repo = gh_repos)
+repos
+repos <- repos %>% unnest_longer(repo)
+
+repos %>% hoist(repo, 
+  login = c("owner", "login"), 
+  name = "name",
+  homepage = "homepage",
+  watchers = "watchers_count"
+)
+
+users <- tibble(d=users)
+
+names(users$users[[1]])
+
+unnest_auto(users)
+```
+
+\`
+
+```{r}
+
+x %>% head()
+```
+
+```{r}
+c1 <- xml_find_all(d, 'concept')
+```
+
+```{r}
+c2 <- as_list(c1)
+```
+
+```{r}
+
+```
+
+```{r}
+c3 <- tibble(r1 = c2)
+```
+
+```{r}
+c3 %>% head()
+```
+
+```{r}
+c3 %>% head()
+```
+
+    c4 = c3 %>% head() %>% unnest_longer(col = r1)
+
+```{r}
+c4 <- c3 %>% unnest_longer(col = r1)
+```
+
+```{r}
+c4[[2]] %>% length()
+```
+
+```{r}
+c4[[1]] %>% length
+```
+
+```{r}
+users <- tibble(user = c4[[1]])
+```
+
+```{r}
+names(users$user) %>% length()
+```
+
+```{r}
+users %>% head() %>% unnest_longer(col = user)
+```
+
+```{r}
+users %>% unnest_longer(col = user) %>%
+  filter(!is.na(user_id) )%>% 
+           unnest_longer() %>%
+  head()
+
+
+install.packages("tidyverse")
+```
+
+```{r}
+f2 <- function(.x){
+  .x %>% collapse::qDF() %>% unnest(everything())
+  
+}
+
+q1 <- xml2::xml_find_all(d, "//assntype")
+
+y <- q1 %>% purrr::map(~as_list(.x)) 
+
+
+y1 <-  y %>% map_df(f2)  
+
+
+y1
+```
+
+```{r}
+x1 <- xml_find_all(d, "//association/qualifier")
+d <- read_xml("inst/Core_MEDRT_XML/Core_MEDRT_2022.05.02_XML.xml")
+
+f3 <- function(.x1){
+  .x1 %>% collapse::qDF() %>% unnest(everything())
+  
+}
+
+q2 <- xml2::xml_find_all(d, "//association/qualifier")
+
+y3 <-  y %>% map_df(f3) 
+
+y3
+
+
+
+```
+
+```{r}
+f2 <- function(.x){
+  .x %>% collapse::qDF() %>% unnest(everything())
+}
+
+
+
+q1 <- xml2::xml_find_all(d, "//concept")
+
+x2 <- q1 %>% as_list()
+
+x2 <- xml_siblings(q1)
+
+
+
+y <- q1 %>% purrr::map_df(~collapse::qDF(.x))
+y
+y1[1]
+y1 <-  y[1] %>% map_df(f2)  
+
+
+y1
+```
+
+```{r}
+q2 <- xml2::xml_find_all(d, "//concept")
+q1 <- xml2::xml_find_all(d, "//assntype")
+
+q2[[1]] %>% as_list()
+
+b<- q2 %>% as_list()
+
+x <- q2 %>% purrr::map(~as_list(.x)) 
+y <- q1 %>% purrr::map(~as_list(.x)) 
+
+f2 <- function(.x){
+  .x %>% collapse::qDF() %>% unnest(everything())
+  
+}
+
+y[1]
+
+y2 <-  y[1:100] %>% map_df(f2)  
+
+f1 <- function(.x){
+  .x %>% collapse::qDF() %>% unnest(everything())
+  
+}
+
+x[1]
+
+
+```
+
+```{r}
+
+#Read_medrt 
+
+d %>% head()
+dc <- xml2::xml_contents(d)
+dc
+
+xml2::xml_children(d)[20:30]
+
+xml2::xml_children(d)[30:50]
+
+namespace <- xml_find_all(d, 'namespace') 
+namespace
+
+namespace <- xml_find_all(d, 'namespace') %>% as_list() 
+namespace
+
+namespace <- xml_find_all(d, 'namespace') %>% as_list() %>%  tibble(c = .) 
+namespace
+```
+
+```{f1 <- function(.x){}
+.x[1:5] %>% collapse::qDF() %>% unnest(everything())
+  
+}
+
+
+
+x2 <-  x[1:100] %>% map_df(f1)  
+x2
+```
+
+
+```{f1 <- function(.x){}
+```
+
+```{r}
+association <- xml_find_all(d, 'association')
+association[15:30]
+```
+
+
+
+```{r}
+#NAMESPACE
+```
+
+
+```{r}
+namespace <- xml_find_all(d, 'namespace')
+namespace
+```
+
+```{r}
+xml_find_all(d, 'namespace')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names()
+```
+
+```{r}
+pacman::p_load(janitor)
+ n <-  xml_find_all(d, 'namespace[1]')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+ n
+```
+
+
+```{r}
+n1<- n %>% unnest_longer(col = everything())
+n1
+```
+
+
+```{r}
+#PROPTYPE
+'''
+```
+
+```{r}
+proptype <- xml_find_all(d, 'proptype')
+proptype
+```
+
+```{r}
+pacman::p_load(janitor)
+ p <-  xml_find_all(d, 'proptype')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+p
+```
+
+
+```{r}
+p1<- p %>% unnest_longer(col = everything())
+p1
+```
+
+## assntype
+
+```{r}
+assntype <- xml_find_all(d, 'assntype')
+```
+
+
+```{r}
+pacman::p_load(janitor)
+ A <-  xml_find_all(d, 'assntype')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+A
+```
+
+
+```{r}
+A1<- A %>% unnest_longer(col = everything())
+A1
+```
+
+
+```{r}
+#qualtype
+```
+
+
+```{r}
+qualtype <- xml_find_all(d, 'qualtype')
+qualtype
+```
+
+
+```{r}
+pacman::p_load(janitor)
+ q <-  xml_find_all(d, 'qualtype')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+ q
+
+```
+
+
+```{r}
+q1<- q %>% unnest_longer(col = everything())
+q1
+```
+
+
+```{r}
+#term
+```
+
+
+```{r}
+term <- xml_find_all(d, 'term')
+term 
+```
+
+```{r}
+pacman::p_load(janitor)
+ t <-  xml_find_all(d, 'term')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+ t
+
+```
+
+
+```{r}
+t1<- t %>% unnest_longer(col = everything())
+t1
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+#REFERENCED NAMESPACE
+```
+
+
+
+```{r}
+
+referencedNamespace <- xml_find_all(d, 'referencedNamespace')
+referencedNamespace
+
+```
+
+```{r}
+pacman::p_load(htmltidy)
+xml_find_all(d, 'referencedNamespace')  %>% htmltidy::html_view()
+```
+
+
+```{r}
+pacman::p_load(janitor)
+ r <-  xml_find_all(d, 'referencedNamespace')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+r
+```
+
+```{r}
+r1<- r %>% unnest_longer(col = everything())
+r1
+```
+
+```{r}
+xml_find_all(d, 'association[1]')  %>% htmltidy::html_view()
+```
+
+```{r}
+#TAKING ONE ASSOCIATION AND FLATTENING OUT ONE ASOCIATION TAG AS BELOW 
+```
+
+```{r}
+
+ a <-  xml_find_all(d, 'association')  %>% 
+  as_list() %>% 
+  tibble(c = .) %>%
+  slice(1:10) %>% 
+  unnest_wider(col = c) %>% janitor::clean_names() 
+
+a
+```
+```{r}
+ a <-  xml_find_all(d, 'association')  %>% 
+  as_list() %>% 
+  tibble(c = .) %>%
+  unnest_wider(col = c) %>% janitor::clean_names() 
+
+a
+```
+
+
+
+```{r}
+usethis::use_data(a,  overwrite = TRUE)
+```
+
+
+
+```{r}
+
+a1<- a %>% unnest_longer(col = everything())
+#OR RATER IF YOU WANT TO FLATTEN OUT ONE TAG 
+#a1<- a %>% unnest_longer(col = namespace (flattens out namespace alone)
+a1
+
+
+```
+
+```{r}
+a11 <- a1 %>% 
+  rename(Name = name) %>% 
+  rename(NameSpace = namespace) %>%  
+  pivot_wider(names_from = 'qualifier_id', values_from = 'qualifier')
+a11
+
+```
+
+```{r}
+a12 %>% head()
+
+```
+
+```{r}
+a12<- a11 %>% unnest_longer(col = everything())
+a12
+```
+
+
+```{r}
+a13<-a12 %>% unnest_wider(col = everything())
+a13
+```
+
+
+```{r}
+a12<- a11 %>% unnest_longer(col = everything())
+a12 %>% 
+  filter(!is.na(qualifier_11_id))
+```
+
+
+```{r}
+#qualifier is not unnested yet so we try again
+
+a11 <- a1 %>% unnest_longer(col = qualifier)
+
+
+#pivot qualifier_id to qualifier but before that we need to rename namespace and name to other names 
+
+```
+
+```{r}
+a12 <- a11 %>% 
+  rename(Name = name) %>% 
+  rename(NameSpace = namespace) %>% 
+  pivot_wider(names_from = 'qualifier_id', values_from = 'qualifier')
+```
+
+
+```{r}
+#successfully renamed and pivoting qualifier_id to qualifier 
+a12 <- a11 %>% 
+  rename(Name = name) %>% 
+  rename(NameSpace = namespace) %>%  
+  pivot_wider(names_from = 'qualifier_id', values_from = 'qualifier')
+  
+```
+
+```{r}
+a12
+
+#we have successfully flatenned out a proper tag association[1]
+#let us now cross-check
+```
+
+
+```{r}
+#association
+```
+
+
+```{r}
+
+association <- xml_find_all(d, 'association') 
+association
+```
+
+
+```{r}
+pacman::p_load(htmltidy)
+xml_find_all(d, 'association[20]')  %>% htmltidy::html_view()
+
+```
+
+
+```{r}
+pacman::p_load(janitor)
+ as <-  xml_find_all(d, 'association[1]')  %>% as_list() %>% tibble(c = .) %>% unnest_wider(col = c) %>% janitor::clean_names() 
+ as
+```
+
+
+```{r}
+as1<- as %>% unnest_longer(col = everything())
+as1
+```
+
+
+```{r}
+as1<- as %>% unnest_longer(col = qualifier)
+as1
+```
+
+
+```{r}
+as2<- as1 %>% unnest_longer(col = qualifier)
+as2
+```
+
+
+```{r}
+as3<- as2 %>% unnest_longer(col = qualifier)
+as3
+```
+
+
+```{r}
+a4 <- as3 %>% 
+  rename(asname = name) %>% 
+  rename(asnamespace = namespace) %>%  
+  pivot_wider(names_from = 'qualifier_id', values_from = 'qualifier')
+a4
+```
+
+
+```{r}
+a5<-a4 %>% unnest_longer(col = everything())
+a5
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+pacman::p_load(htmltidy)
+xml_find_all(d, 'association[2]')  %>% htmltidy::html_view()
+```
+```
+
+```{r}
+association <-xml_find_all(d, 'namespace')
+```
+
+```{r}
+
+```
+
+```{r}
+for (col in names(a)) {
+ a <- unnest_longer(x, col = all_of(col) )
+}
+
+```
+
+```{r}
+j <- sapply(x, class) == 'list'
+j
+```
+
+```{r}
+names(a)[i]
+
+for (coli in names(a)[i]){
+  print(coli )
+  a <- a %>% unnest_longer(col = all_of(coli))
+}
+
+a
+```
+
+```{r}
+
+association1 <- xml_find_all(d, 'association')  %>% as_list() %>% tibble(c = .)  %>% unnest_wider(col = c) %>% unnest_longer(everything())
+
+association1
+```{r}
+
+```
+
